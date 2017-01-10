@@ -75,7 +75,6 @@ Mario.Model = {
     if(this.offset || this.player.jumping){
       landable = this.checkGrounding(landable);
     }
-    console.log(landable);
     this.fixX();
     this.fixY(landable);
   },
