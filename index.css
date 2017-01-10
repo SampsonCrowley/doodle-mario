@@ -1,0 +1,60 @@
+*, body, html {
+  box-sizing: border-box;
+  margin:0;
+  padding: 0;
+  display: block;
+  position: relative;
+}
+
+mario-game {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  display: block;
+  overflow: hidden;
+}
+
+mario-game > *{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+mario-game * {
+  position: absolute;
+}
+
+mario-game > mario-background {
+  background: -webkit-linear-gradient(#b7eaff 0%, #94dfff 100%);
+  background: -o-linear-gradient(#b7eaff 0%, #94dfff 100%);
+  background: linear-gradient(#b7eaff 0%, #94dfff 100%);
+  z-index: 0;
+}
+
+mario-game > mario-platforms {
+  background: transparent;
+  z-index: 1000;
+}
+
+mario-game > mario-platforms > platform {
+  height: 50px;
+  width: 100%;
+  background: center/50px url("ground.png") repeat-x;
+  border-top: 4px solid #00dd00;
+}
+
+mario-game > mario-player {
+  height: calc(100% - 50px);
+  background: transparent;
+  z-index: 2000;
+}
+
+mario-game > mario-player > player {
+  height: 80px;
+  width: 60px;
+  background: center/100% url("mario.svg") no-repeat;
+}
