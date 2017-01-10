@@ -19,12 +19,11 @@ Mario.Controller = {
     that = this;
     requestAnimationFrame(function(){that.animate()});
     this.model.move();
-    this.view.render(this.model.player, this.model.getVisible(), this.model.clouds, this.model.offset)
-    console.log()
+    this.view.render(this.model.player, this.model.getVisible(), this.model.clouds, this.model.screenOffset)
   },
   resize: function(width, height) {
     Mario.Model.resize(width, height)
-    Mario.View.render(Mario.Model.player, Mario.Model.getVisible(), Mario.Model.clouds, Mario.Model.offset)
+    Mario.View.render(Mario.Model.player, Mario.Model.getVisible(), Mario.Model.clouds, Mario.Model.screenOffset)
   }
 
 }

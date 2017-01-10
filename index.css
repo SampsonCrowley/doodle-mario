@@ -21,7 +21,6 @@ mario-game > *{
   left: 0;
   width: 100%;
   height: 100%;
-  overflow: hidden;
 }
 
 mario-game * {
@@ -38,6 +37,7 @@ mario-game > mario-background {
 mario-game > mario-platforms {
   background: transparent;
   z-index: 1000;
+  height: calc(100% - 200px);
 }
 
 mario-game > mario-platforms > platform {
@@ -48,7 +48,7 @@ mario-game > mario-platforms > platform {
 }
 
 mario-game > mario-player {
-  height: calc(100% - 50px);
+  height: calc(100% - 250px);
   background: transparent;
   z-index: 2000;
 }

@@ -5,6 +5,7 @@ Mario.View = {
     this.entityCanvas = this.gameWrapper.getElementsByClassName("mario-platforms")[0] || this.createEntityLayer();
     this.playerCanvas = this.gameWrapper.getElementsByClassName("mario-player")[0] || this.createPlayer();
     this.listeners(cb);
+    this.i = 0;
   },
   createWrapper: function() {
     var game = document.createElement("mario-game");
@@ -39,9 +40,12 @@ Mario.View = {
     cb.size(window.innerWidth, window.innerHeight)
   },
   render(player, platforms, clouds, offset) {
-    this.renderClouds(clouds, offset);
+    if(this.i % 60 === 0){
+      this.renderClouds(clouds, offset);
+    }
     this.renderPlatforms(platforms, offset);
     this.renderPlayer(player, offset);
+    this.i++
   },
   renderPlatforms(platforms, offset) {
     this.entityCanvas.innerHTML = "";
@@ -52,12 +56,12 @@ Mario.View = {
       img.style.width = platforms[i].width;
     }
   },
-  renderClouds: function(clouds){
+  renderClouds: function(clouds, offset){
     this.backgroundCanvas.innerHTML = "";
     for(var i = 0; i < clouds.length; i++){
       var img = this.createEl("IMG", this.backgroundCanvas);
       img.src = "cloud.svg"
-      img.style.top = clouds[i].y;
+      img.style.top = clouds[i].y - (this.offset/10);
       img.style.left = clouds[i].x;
       img.style.width = clouds[i].width;
     }

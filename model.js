@@ -12,6 +12,13 @@ Mario.Model = {
       this.clouds.push({x, y, z});
     }
   },
+  newPlatform: function(){
+    return {
+      x: 0,
+      y: 2000,
+      width: 200
+    }
+  },
   checkKeys: function(){
     if (this.keys[38] || this.keys[32]) {
       // up arrow
@@ -48,31 +55,32 @@ Mario.Model = {
         this.player.jumping = false;
         this.offset = this.player.y
       }
-    }else{
-      if (this.player.y <= this.offset) {
-        if(this.player.grounded || !this.player.jumping){
-          this.player.y = this.offset;
-          this.player.jumping = false;
-        }
+    }else if (this.player.y <= this.offset) {
+      if(this.player.grounded || !this.player.jumping){
+        this.player.y = this.offset;
+        this.player.jumping = false;
+        this.player.velY = 0;
       }
     }
   },
   move: function(){
     this.checkKeys();
-    var visible = this.getVisible();
+    var landable = this.getLandable();
+    if(this.player.jumping)
     this.player.velY -= this.gravity;
     this.player.velX *= this.friction;
     this.player.x += this.player.velX;
     this.player.y += this.player.velY;
+    this.screenOffset = this.player.y;
     if(this.offset || this.player.jumping){
-      var under = this.checkGrounding(visible);
+      landable = this.checkGrounding(landable);
     }
+    console.log(landable);
     this.fixX();
-    this.fixY(under);
+    this.fixY(landable);
   },
   resize: function (nWidth, nHeight) {
-    this.player.y = 0;
-    this.player.x = nWidth/2;
+    this.player.y = this.offset;
     this.height = nHeight;
     this.width = nWidth;
     this.generateClouds();
@@ -100,10 +108,22 @@ Mario.Model = {
     }
     return under;
   },
+  getLandable: function() {
+    var landable_elements = []
+    for (var i = 0; i < this.level_entities.length; i++){
+      if (this.level_entities[i].y >= this.offset && this.level_entities[i].y <= this.player.y) {
+        landable_elements.push(this.level_entities[i]);
+      }
+    }
+    return landable_elements;
+  },
   getVisible: function() {
     var visible_elements = []
     for (var i = 0; i < this.level_entities.length; i++){
-      if (this.level_entities[i].y >= this.offset && this.level_entities[i].y < this.offset + this.height) {
+      if(this.level_entities[i].y < this.screenOffset - 500){
+        this.level_entities.splice(i, 1);
+        this.level_entities.push(this.newPlatform())
+      } else if(this.level_entities[i].y < this.screenOffset + this.height) {
         visible_elements.push(this.level_entities[i]);
       }
     }
@@ -131,14 +151,14 @@ Mario.Model = {
       width: window.innerWidth/4,
     },
     {
-      x: window.innerWidth/2,
+      x: window.innerWidth/3,
       y: 800,
       width: window.innerWidth/4,
     },
     {
-      x: 0,
+      x: window.innerWidth/2,
       y: 1000,
-      width: window.innerWidth/3,
+      width: window.innerWidth/4
     },
     {
       x: window.innerWidth/2,
@@ -146,9 +166,9 @@ Mario.Model = {
       width: window.innerWidth/4
     },
     {
-      x: window.innerWidth/2,
+      x: 0,
       y: 1400,
-      width: window.innerWidth/2,
+      width: window.innerWidth/4,
     },
     {
       x: window.innerWidth/4,
@@ -178,6 +198,7 @@ Mario.Model = {
   keys: [],
 
   // how far offset the canvas is
-  offset: 0
+  offset: 0,
+  screenOffset: 0,
 
 }
